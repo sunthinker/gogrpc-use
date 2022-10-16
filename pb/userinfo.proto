@@ -1,0 +1,32 @@
+// 指定当前proto语法版本，2和3
+syntax = "proto3";
+
+// option go_package = "path;name";
+// path：表示生成的go文件的存放相对路径，会自动生成目录
+// name：表示生成的go文件所属的包名
+option go_package = "./pb;pb";
+
+// 指定生成go文件的所属包名，但会以option go_package = "path;name"中的name为准
+// package pb;
+
+// 定义服务service
+// 如果想要将消息类型用在RPC系统中，可以在.proto文件中定义RPC接口，
+// protobuf编绎器将会根据所选择的不同语言生成服务接口代码及存根
+service UserInfoService {
+    // rpc 服务的函数名（传入参数）returns（返回参数）
+    rpc GetUserInfo(UserInfoRequest) returns (UserInfoResponse);
+    // rpc ...
+}
+
+// 消息结构
+message UserInfoRequest {
+    string id = 1;
+}
+
+message UserInfoResponse {
+    string id = 1;
+    string username = 2;
+    int32  age = 3;
+    optional string dept = 4;       //optional可选字段，会生成指针类型*string
+    repeated string roles = 5;      //repeated可选字段，会生成切片类型[]string
+}
